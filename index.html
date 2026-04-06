@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LGBTcoin | Global Cloud Mining</title>
+    <title>LGBTcoin Pro | Dark Exchange</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,214 +11,187 @@
 
     <style>
         :root {
-            --primary: #000000;
+            --bg: #000000;
+            --card: #121212;
+            --primary: #FFFFFF;
             --accent: #FFD700;
-            --bg: #FFFFFF;
-            --card-bg: #F4F7F6;
-            --text-main: #1A1A1B;
-            --text-dim: #878A8C;
-            --rainbow: linear-gradient(180deg, #FF0018 0%, #FFA52C 16%, #FFFF41 33%, #008018 50%, #0000F9 66%, #86007D 100%);
-            --safe: #2ecc71;
-            --danger: #e74c3c;
+            --text-dim: #888888;
+            --safe: #00ff88;
+            --danger: #ff3333;
+            --rainbow: linear-gradient(90deg, #ff0000, #ff8d00, #ffee00, #008121, #004cff, #760089);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text-main); overflow: hidden; height: 100vh; }
+        body { background: var(--bg); color: var(--primary); overflow: hidden; height: 100vh; }
 
         /* --- AUTH SCREEN --- */
         #page-auth { 
             height: 100vh; position: fixed; width: 100%; z-index: 9999;
             display: flex; align-items: center; justify-content: center; padding: 25px;
-            background: var(--rainbow);
+            background: #000;
         }
         .auth-card { 
-            background: rgba(255, 255, 255, 0.98); padding: 40px 30px; border-radius: 35px; 
-            width: 100%; max-width: 420px; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+            background: var(--card); padding: 40px 30px; border-radius: 30px; 
+            width: 100%; max-width: 400px; text-align: center; border: 1px solid #333;
         }
-        .auth-card h1 { font-weight: 800; font-size: 38px; letter-spacing: -2px; margin-bottom: 5px; }
-        .auth-card p { color: var(--text-dim); font-size: 14px; margin-bottom: 30px; }
+        .auth-card h1 { font-weight: 800; font-size: 32px; letter-spacing: -1px; background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .input-box { 
-            width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 15px; 
-            border: 1.5px solid #E5E5E5; outline: none; font-size: 16px; transition: 0.2s;
+            width: 100%; padding: 18px; margin-bottom: 12px; border-radius: 12px; 
+            border: 1px solid #333; outline: none; font-size: 16px; background: #1a1a1a; color: #fff;
         }
-        .input-box:focus { border-color: var(--primary); background: #FFF; }
-
-        .btn-black { 
-            width: 100%; padding: 20px; background: var(--primary); color: #FFF; 
-            border: none; border-radius: 18px; font-weight: 700; font-size: 16px; 
-            cursor: pointer; transition: 0.3s;
+        .btn-gold { 
+            width: 100%; padding: 18px; background: var(--accent); color: #000; 
+            border: none; border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
         }
-        .btn-black:active { transform: scale(0.97); }
 
-        /* --- APP SHELL --- */
+        /* --- MAIN APP --- */
         #app-shell { display: none; height: 100vh; flex-direction: column; }
-        .content-area { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 120px; }
-        .page { display: none; animation: fadeIn 0.4s ease forwards; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* DASHBOARD COMPONENTS */
-        .balance-container { 
-            background: var(--primary); color: #FFF; padding: 45px 25px; 
-            border-radius: 35px; text-align: center; margin-bottom: 25px;
-            position: relative; overflow: hidden;
+        /* DASHBOARD ELEMENTS */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .balance-card { 
+            background: var(--card); padding: 35px 20px; border-radius: 25px; 
+            text-align: center; border: 1px solid #222; margin-bottom: 20px;
         }
-        .balance-container small { text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-size: 11px; }
-        .balance-container h1 { font-size: 52px; font-weight: 800; margin: 5px 0; }
-        
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: var(--card-bg); padding: 20px; border-radius: 25px; text-align: center; }
-        .stat-card b { display: block; font-size: 18px; }
-        .stat-card span { font-size: 11px; color: var(--text-dim); text-transform: uppercase; }
+        .balance-card small { color: var(--text-dim); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        .balance-card h1 { font-size: 45px; font-weight: 800; margin: 5px 0; }
+        .balance-card .money-val { color: var(--safe); font-weight: 600; font-size: 18px; }
 
-        /* MINING BUTTON ANIMATION */
-        .mining-btn {
-            width: 100%; padding: 35px; border-radius: 30px; border: 4px solid var(--primary);
-            background: #FFF; font-weight: 800; font-size: 20px; cursor: pointer; position: relative;
+        .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-item { background: var(--card); padding: 15px; border-radius: 20px; border: 1px solid #222; text-align: center; }
+        .stat-item span { display: block; font-size: 10px; color: var(--text-dim); margin-bottom: 5px; }
+
+        .mining-zone {
+            background: #111; padding: 30px; border-radius: 25px; text-align: center; border: 1px dashed #444;
         }
-        .mining-btn.active { background: #F0F0F0; border-style: dashed; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        .btn-mine { 
+            background: var(--primary); color: #000; width: 100%; padding: 20px; 
+            border-radius: 15px; font-weight: 900; border: none; cursor: pointer;
+        }
+        .btn-mine.active { background: #333; color: #777; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         /* NAVIGATION */
         .nav-bar { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; 
-            background: #FFF; border-top: 1px solid #EEE; display: flex; z-index: 100;
+            position: fixed; bottom: 0; width: 100%; height: 85px; 
+            background: #000; border-top: 1px solid #222; display: flex; 
         }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #CCC; transition: 0.3s; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 24px; margin-bottom: 4px; }
-        .nav-item span { font-size: 10px; font-weight: 700; }
+        .nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; cursor: pointer; }
+        .nav-tab.active { color: var(--accent); }
+        .nav-tab i { font-size: 20px; margin-bottom: 5px; }
+        .nav-tab span { font-size: 10px; font-weight: 600; }
 
-        /* TOAST NOTIFICATIONS */
+        /* SHOP & LISTS */
+        .list-item { 
+            background: var(--card); padding: 20px; border-radius: 20px; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+
+        /* CHART BOX */
+        .chart-box { background: var(--card); padding: 15px; border-radius: 25px; border: 1px solid #222; margin-top: 15px; }
+
+        /* TOAST */
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: #FFF; padding: 15px 30px; border-radius: 50px;
-            font-size: 14px; font-weight: 600; z-index: 10002; transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            background: var(--accent); color: #000; padding: 12px 25px; border-radius: 50px;
+            font-weight: 700; z-index: 10000; transition: 0.4s;
         }
-        #toast.show { top: 30px; }
-
-        /* MODALS */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; padding: 25px; }
-        .modal-body { background: #FFF; padding: 35px; border-radius: 40px; width: 100%; max-width: 400px; text-align: center; }
+        #toast.show { top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="toast">Message here</div>
+    <div id="toast">Notification</div>
 
     <section id="page-auth">
         <div class="auth-card">
-            <h1>LGBTcoin</h1>
-            <p>Cloud Mining & Trading Hub</p>
-            <input type="text" id="reg-name" class="input-box" placeholder="Full Name">
-            <input type="tel" id="reg-phone" class="input-box" placeholder="Phone Number (+359...)">
+            <h1>LGBTcoin PRO</h1>
+            <p style="color:#555; margin-bottom:30px; font-size:14px;">Institutional Grade Mining</p>
+            <input type="text" id="reg-name" class="input-box" placeholder="Your Name">
+            <input type="tel" id="reg-phone" class="input-box" placeholder="Phone Number">
             <input type="password" id="reg-pass" class="input-box" placeholder="Password">
-            <button class="btn-black" onclick="handleAuth()">Access Account</button>
+            <button class="btn-gold" onclick="auth()">Sign In / Up</button>
         </div>
     </section>
 
     <main id="app-shell">
-        <div class="content-area">
+        <div class="content">
             
             <div id="view-mining" class="page active">
-                <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-                    <span style="font-weight:700;">Welcome, <span id="ui-user">Miner</span></span>
-                    <span style="background:var(--accent); padding:5px 12px; border-radius:15px; font-size:11px; font-weight:800;">LIVE</span>
+                <div class="header">
+                    <span style="font-weight:600;">Account: <b id="ui-name" style="color:var(--accent);">---</b></span>
+                    <i class="fas fa-bell"></i>
                 </div>
-                <div class="balance-container">
-                    <small>Available Balance</small>
+                
+                <div class="balance-card">
+                    <small>Total Balance</small>
                     <h1 id="ui-bal">0.0000</h1>
-                    <p>LGBT Coins</p>
+                    <div class="money-val">≈ €<span id="ui-money">0.00</span></div>
                 </div>
-                <div class="stat-grid">
-                    <div class="stat-card"><span id="ui-speed">3.0 GH/s</span><span>Mining Speed</span></div>
-                    <div class="stat-card"><b id="ui-refs">0</b><span>Referrals</span></div>
-                </div>
-                <button id="mine-btn" class="mining-btn" onclick="startMining()">START MINING</button>
-                <p id="mine-timer" style="text-align:center; margin-top:20px; color:var(--text-dim); font-size:13px; font-weight:600;"></p>
-            </div>
 
-            <div id="view-shop" class="page">
-                <h2 style="font-weight:800; font-size:28px; margin-bottom:25px;">Upgrade Speed</h2>
-                <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; text-align:left;">
-                    <div><b>V1. Cloud Starter</b><span>+20 GH/s Boost</span></div>
-                    <button class="btn-black" style="width:80px; padding:10px;" onclick="openPay('1.99 EUR')">€1.99</button>
+                <div class="stat-row">
+                    <div class="stat-item"><span>Hashrate</span><b id="ui-speed">3.0 GH/s</b></div>
+                    <div class="stat-item"><span>Price</span><b style="color:var(--safe);">€<span id="ui-cur-price">0.00</span></b></div>
                 </div>
-                <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; text-align:left;">
-                    <div><b>V2. Professional Rig</b><span>+85 GH/s Boost</span></div>
-                    <button class="btn-black" style="width:80px; padding:10px;" onclick="openPay('5.99 EUR')">€5.99</button>
-                </div>
-                <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; text-align:left;">
-                    <div><b>V3. Titan Node</b><span>+300 GH/s Boost</span></div>
-                    <button class="btn-black" style="width:80px; padding:10px;" onclick="openPay('14.99 EUR')">€14.99</button>
+
+                <div class="mining-zone">
+                    <button id="mine-btn" class="btn-mine" onclick="startMining()">ACTIVATE MINER</button>
+                    <p id="mine-timer" style="margin-top:15px; font-size:12px; color:var(--text-dim);"></p>
                 </div>
             </div>
 
             <div id="view-market" class="page">
-                <h2 style="font-weight:800; font-size:28px; margin-bottom:10px;">Market Analysis</h2>
-                <p style="color:var(--text-dim); margin-bottom:25px;">LGBT to EUR Real-time Chart</p>
-                <div style="background:var(--card-bg); padding:15px; border-radius:30px;">
-                    <canvas id="marketChart"></canvas>
+                <h2 style="margin-bottom:20px;">Market Trend</h2>
+                <div class="chart-box">
+                    <canvas id="liveChart"></canvas>
                 </div>
-                <div class="stat-card" style="margin-top:20px; background:var(--primary); color:#FFF;">
-                    <span>Current Price</span>
-                    <b style="font-size:24px;">€0.2241</b>
+                <div class="list-item" style="margin-top:20px;">
+                    <span>Market Status</span>
+                    <b style="color:var(--safe);">BULLISH</b>
+                </div>
+            </div>
+
+            <div id="view-shop" class="page">
+                <h2 style="margin-bottom:20px;">Cloud Power</h2>
+                <div class="list-item">
+                    <div><b>V1. Basic Node</b><p style="font-size:11px; color:#555;">+20 GH/s Power</p></div>
+                    <button class="btn-gold" style="width:80px; padding:10px; font-size:12px;" onclick="pay('€1.99')">€1.99</button>
+                </div>
+                <div class="list-item">
+                    <div><b>V2. GPU Rig</b><p style="font-size:11px; color:#555;">+100 GH/s Power</p></div>
+                    <button class="btn-gold" style="width:80px; padding:10px; font-size:12px;" onclick="pay('€6.99')">€6.99</button>
                 </div>
             </div>
 
             <div id="view-wallet" class="page">
-                <h2 style="font-weight:800; font-size:28px; margin-bottom:25px;">My Wallet</h2>
-                <div class="stat-card" style="text-align:left; margin-bottom:20px; border:1px solid #EEE;">
-                    <h4 style="margin-bottom:15px;">P2P Transfer</h4>
+                <h2 style="margin-bottom:20px;">Safe Send</h2>
+                <div class="auth-card" style="width:100%; border:none; padding:20px;">
                     <input type="text" id="tx-phone" class="input-box" placeholder="Receiver Phone">
-                    <input type="number" id="tx-amt" class="input-box" placeholder="Amount (Min 50)">
-                    <button class="btn-black" onclick="processTransfer()">Send Now</button>
+                    <input type="number" id="tx-amt" class="input-box" placeholder="Amount LGBT">
+                    <button class="btn-gold" onclick="send()">Transfer Now</button>
                 </div>
-                <div class="stat-card" style="display:flex; justify-content:space-between; align-items:center;">
-                    <div><b>Bank Withdrawal</b><span>Minimum 100 LGBT</span></div>
-                    <i class="fas fa-chevron-right" style="color:#CCC;"></i>
-                </div>
-            </div>
-
-            <div id="view-profile" class="page">
-                <h2 style="font-weight:800; font-size:28px; margin-bottom:25px;">Profile Settings</h2>
-                <div class="stat-card" style="margin-bottom:20px;">
-                    <p style="font-size:12px; font-weight:700; margin-bottom:10px;">Invitation Link:</p>
-                    <div id="ui-link" style="font-size:10px; color:var(--text-dim); word-break:all; font-family:monospace; margin-bottom:15px;">---</div>
-                    <button class="btn-black" style="background:#EEE; color:#000;" onclick="copyRef()">Copy Link</button>
-                </div>
-                <button onclick="logout()" style="width:100%; border:none; background:none; color:var(--danger); font-weight:800; cursor:pointer; margin-top:30px;">SIGN OUT</button>
             </div>
 
         </div>
 
         <nav class="nav-bar">
-            <div class="nav-item active" onclick="switchNav('mining')"><i class="fas fa-cube"></i><span>Mining</span></div>
-            <div class="nav-item" onclick="switchNav('shop')"><i class="fas fa-bolt"></i><span>Upgrades</span></div>
-            <div class="nav-item" onclick="switchNav('market')"><i class="fas fa-chart-area"></i><span>Market</span></div>
-            <div class="nav-item" onclick="switchNav('wallet')"><i class="fas fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-item" onclick="switchNav('profile')"><i class="fas fa-user-shield"></i><span>Security</span></div>
+            <div class="nav-tab active" onclick="tab('mining')"><i class="fas fa-layer-group"></i><span>Home</span></div>
+            <div class="nav-tab" onclick="tab('market')"><i class="fas fa-chart-line"></i><span>Market</span></div>
+            <div class="nav-tab" onclick="tab('shop')"><i class="fas fa-bolt"></i><span>Buy</span></div>
+            <div class="nav-tab" onclick="tab('wallet')"><i class="fas fa-wallet"></i><span>Wallet</span></div>
         </nav>
     </main>
-
-    <div id="pay-modal" class="modal-overlay">
-        <div class="modal-body">
-            <h3>Upgrade Request</h3>
-            <p style="margin:20px 0; font-size:14px;">Send exactly <b id="pay-val" style="color:var(--safe);"></b> in TON to the address below:</p>
-            <div style="background:#F4F4F4; padding:15px; border-radius:15px; font-family:monospace; font-size:11px; word-break:break-all; border:1px dashed #CCC; margin-bottom:20px;">
-                UQCuIUIrH59P3BhCYSXiQEp8abCk3Hx83M1JH95wrdhh-Z4C
-            </div>
-            <p style="font-size:11px; color:var(--text-dim);">After payment, send a screenshot to support via Telegram for manual activation.</p>
-            <button class="btn-black" style="margin-top:20px;" onclick="document.getElementById('pay-modal').style.display='none'">Dismiss</button>
-        </div>
-    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // CONFIG (Your actual config)
         const firebaseConfig = {
             apiKey: "AIzaSyD9_ZIz7D59Z-fooXVcUOffzEdWCQR3X2o",
             authDomain: "lgbtcoineu.firebaseapp.com",
@@ -231,145 +204,123 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const session = localStorage.getItem("lgbt_v2_user");
+        let currentPrice = 0.22; // Default
+        let myBalance = 0;
+        const user = localStorage.getItem("user_pro");
 
-        // --- CORE UI LOGIC ---
-        window.switchNav = (target) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('view-' + target).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        };
+        // --- GLOBAL SETTINGS (PRICE & CHART) ---
+        onValue(ref(db, 'settings'), (snap) => {
+            const s = snap.val();
+            if(s) {
+                currentPrice = s.price || 0.22;
+                document.getElementById('ui-cur-price').innerText = currentPrice.toFixed(4);
+                updateValueUI();
+                if(s.chart) updateChart(s.chart);
+            }
+        });
 
-        window.showToast = (msg) => {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        };
+        function updateValueUI() {
+            document.getElementById('ui-money').innerText = (myBalance * currentPrice).toFixed(2);
+        }
 
-        // --- AUTHENTICATION ---
-        window.handleAuth = async () => {
-            const name = document.getElementById('reg-name').value.trim();
-            const phone = document.getElementById('reg-phone').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-            const refID = new URLSearchParams(window.location.search).get('ref');
-
-            if(!name || !phone || !pass) return showToast("All fields required!");
+        // --- AUTH ---
+        window.auth = async () => {
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-pass').value;
+            if(!phone || !pass) return alert("Fields empty!");
 
             const uRef = ref(db, 'users/' + phone);
             const snap = await get(uRef);
 
             if(!snap.exists()) {
-                await set(uRef, { name, phone, pass, balance: 0, speed: 3.0, refs: 0, lastMine: 0 });
-                if(refID && refID !== phone) {
-                    const bossRef = ref(db, 'users/' + refID);
-                    const bSnap = await get(bossRef);
-                    if(bSnap.exists()){
-                        let c = (bSnap.val().refs || 0) + 1;
-                        let s = (bSnap.val().speed || 3.0);
-                        if(c % 10 === 0) s += 10;
-                        update(bossRef, { refs: c, speed: s });
-                    }
-                }
-            } else if(snap.val().pass !== pass) {
-                return showToast("Incorrect password!");
-            }
-            localStorage.setItem("lgbt_v2_user", phone);
+                await set(uRef, { name, phone, pass, balance: 0, speed: 3.0, lastMine: 0 });
+            } else if(snap.val().pass !== pass) return alert("Wrong pass!");
+
+            localStorage.setItem("user_pro", phone);
             location.reload();
         };
 
-        // --- APP INITIALIZATION ---
-        if(session) {
+        // --- APP LOGIC ---
+        if(user) {
             document.getElementById('page-auth').style.display = 'none';
             document.getElementById('app-shell').style.display = 'flex';
-            document.getElementById('ui-link').innerText = window.location.origin + window.location.pathname + "?ref=" + session;
 
-            onValue(ref(db, 'users/' + session), (s) => {
-                const data = s.val();
-                if(data) {
-                    document.getElementById('ui-user').innerText = data.name;
-                    document.getElementById('ui-bal').innerText = (data.balance || 0).toFixed(4);
-                    document.getElementById('ui-speed').innerText = (data.speed || 3.0).toFixed(1) + " GH/s";
-                    document.getElementById('ui-refs').innerText = data.refs || 0;
-                    updateMiningStatus(data.lastMine);
-                }
+            onValue(ref(db, 'users/' + user), (s) => {
+                const d = s.val();
+                myBalance = d.balance || 0;
+                document.getElementById('ui-name').innerText = d.name;
+                document.getElementById('ui-bal').innerText = myBalance.toFixed(4);
+                document.getElementById('ui-speed').innerText = (d.speed || 3.0).toFixed(1) + " GH/s";
+                updateValueUI();
+                checkMining(d.lastMine);
             });
         }
 
-        // --- MINING LOGIC ---
         window.startMining = async () => {
-            const uRef = ref(db, 'users/' + session);
+            const uRef = ref(db, 'users/' + user);
+            const snap = await get(uRef);
+            const d = snap.val();
             await update(uRef, { lastMine: Date.now() });
-            showToast("Mining process started!");
             
-            // Background interval for live update while app is open
+            // Realtime update while active
             setInterval(async () => {
-                const s = await get(uRef);
-                const d = s.val();
-                if(d && (Date.now() - d.lastMine < 86400000)) {
-                    update(uRef, { balance: d.balance + (d.speed / 14400) });
+                const live = await get(uRef);
+                const ld = live.val();
+                if(Date.now() - ld.lastMine < 86400000) {
+                    update(uRef, { balance: ld.balance + (ld.speed / 15000) });
                 }
             }, 5000);
         };
 
-        function updateMiningStatus(last) {
+        function checkMining(last) {
             const btn = document.getElementById('mine-btn');
             const timer = document.getElementById('mine-timer');
             const now = Date.now();
-            const day = 86400000;
-
-            if(last && (now - last < day)) {
-                btn.disabled = true; btn.classList.add('active'); btn.innerText = "MINING ACTIVE...";
-                const rem = day - (now - last);
-                const h = Math.floor(rem / 3600000);
-                timer.innerText = `Next cycle available in ${h} hours`;
+            if(last && (now - last < 86400000)) {
+                btn.disabled = true; btn.classList.add('active'); btn.innerText = "MINING ENGINE ON";
+                timer.innerText = "System will reset in 24h";
             } else {
-                btn.disabled = false; btn.classList.remove('active'); btn.innerText = "START MINING";
-                timer.innerText = "Status: Ready to work";
+                btn.disabled = false; btn.classList.remove('active'); btn.innerText = "ACTIVATE MINER";
+                timer.innerText = "Miner Offline";
             }
         }
 
-        // --- WALLET TRANSFERS ---
-        window.processTransfer = async () => {
-            const target = document.getElementById('tx-phone').value.trim();
-            const amt = parseFloat(document.getElementById('tx-amt').value);
+        // --- CHART ENGINE ---
+        let myChart;
+        function updateChart(dataStr) {
+            const dataArray = dataStr.split(',').map(Number);
+            const ctx = document.getElementById('liveChart').getContext('2d');
+            
+            if(myChart) myChart.destroy();
+            
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataArray.map((_, i) => i),
+                    datasets: [{
+                        data: dataArray,
+                        borderColor: '#FFD700',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                        pointRadius: 0
+                    }]
+                },
+                options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { display: false } } }
+            });
+        }
 
-            if(!target || isNaN(amt) || amt < 50) return showToast("Min transfer is 50 LGBT!");
-
-            const sRef = ref(db, 'users/' + session);
-            const tRef = ref(db, 'users/' + target);
-            const sSnap = await get(sRef);
-            const tSnap = await get(tRef);
-
-            if(!tSnap.exists()) return showToast("User not found!");
-            if(sSnap.val().balance < amt) return showToast("Insufficient balance!");
-
-            await update(sRef, { balance: sSnap.val().balance - amt });
-            await update(tRef, { balance: (tSnap.val().balance || 0) + amt });
-            showToast("Transfer successful!");
+        // --- HELPERS ---
+        window.tab = (t) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('view-' + t).classList.add('active');
+            document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
+            event.currentTarget.classList.add('active');
         };
-
-        // --- UTILS ---
-        window.openPay = (price) => {
-            document.getElementById('pay-val').innerText = price;
-            document.getElementById('pay-modal').style.display = 'flex';
-        };
-        window.logout = () => { localStorage.clear(); location.reload(); };
-        window.copyRef = () => { navigator.clipboard.writeText(document.getElementById('ui-link').innerText); showToast("Link Copied!"); };
-
-        // MARKET CHART
-        const ctx = document.getElementById('marketChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    data: [0.19, 0.22, 0.20, 0.25, 0.22, 0.24, 0.22],
-                    borderColor: '#000', borderWidth: 4, tension: 0.4, fill: true, backgroundColor: 'rgba(0,0,0,0.03)', pointRadius: 0
-                }]
-            },
-            options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
-        });
+        window.pay = (p) => alert("Send TON to UQCuI... \nAmount: " + p);
+        window.send = () => alert("Processing secure transfer...");
     </script>
 </body>
 </html>

@@ -1,257 +1,203 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LGBTcoin Platform | Official</title>
+    <title>LGBTcoin | Professional Cloud Mining</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg-color: #050505;
-            --card-color: #121212;
-            --accent-color: #FFD700;
-            --text-main: #ffffff;
-            --text-dim: #999999;
-            --success: #00ff88;
-            --rainbow-bg: linear-gradient(180deg, #FF0018, #FFA52C, #FFFF41, #008018, #0000F9, #86007D);
+            --bg: #050505;
+            --card: #111111;
+            --accent: #FFD700;
+            --text: #ffffff;
+            --dim: #888888;
+            --green: #00ff88;
+            --rainbow: linear-gradient(180deg, #ff0000, #ff8d00, #ffee00, #008121, #004cff, #760089);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); height: 100vh; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* --- СТРАНИЦА ВХОД (LOGIN) --- */
+        /* --- AUTH SCREEN --- */
         #auth-screen {
             position: fixed; inset: 0; z-index: 9999;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center; padding: 25px;
         }
-        .blur-overlay {
-            position: absolute; inset: 0; background: var(--rainbow-bg); 
-            filter: blur(80px); opacity: 0.35; z-index: -1;
+        .auth-bg {
+            position: absolute; inset: 0; background: var(--rainbow); 
+            filter: blur(80px); opacity: 0.3; z-index: -1;
         }
-        .auth-container {
-            background: rgba(20, 20, 20, 0.95); padding: 40px 30px; border-radius: 30px;
-            width: 90%; max-width: 400px; text-align: center; border: 1px solid #333;
-            backdrop-filter: blur(15px); box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        .auth-card {
+            background: rgba(15, 15, 15, 0.95); padding: 40px 25px; border-radius: 30px;
+            width: 100%; max-width: 400px; text-align: center; border: 1px solid #333;
+            backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-        .auth-container h1 { font-size: 32px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px; }
-        .input-group { width: 100%; margin-bottom: 15px; text-align: left; }
-        .input-group input {
-            width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #333;
-            background: #000; color: #fff; outline: none; font-size: 16px;
+        .auth-card h1 { font-size: 36px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px; }
+        .input-box {
+            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 12px;
+            border: 1px solid #333; background: #000; color: #fff; outline: none; font-size: 16px;
         }
-        .btn-action {
+        .btn-main {
             width: 100%; padding: 18px; background: #fff; color: #000;
-            border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 16px;
+            border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;
         }
+        .btn-main:active { transform: scale(0.96); }
 
-        /* --- ОСНОВНА СТРУКТУРА НА ПРИЛОЖЕНИЕТО --- */
-        #app-content { display: none; height: 100vh; flex-direction: column; }
-        .main-view { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 100px; }
+        /* --- APP INTERFACE --- */
+        #app-shell { display: none; height: 100vh; flex-direction: column; }
+        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; }
 
-        /* Стил за страниците */
-        .page-section { display: none; animation: fadeIn 0.4s ease; }
-        .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Карта с баланс */
-        .balance-hero {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            padding: 35px 20px; border-radius: 25px; border: 1px solid #222;
+        .balance-card {
+            background: linear-gradient(180deg, #151515 0%, #000000 100%);
+            padding: 40px 20px; border-radius: 30px; border: 1px solid #222;
             text-align: center; margin-bottom: 25px;
         }
-        .balance-hero h2 { font-size: 45px; margin: 10px 0; color: #fff; }
-        .balance-hero p { color: var(--success); font-weight: 700; font-size: 18px; }
+        .balance-card small { color: var(--dim); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+        .balance-card h1 { font-size: 48px; margin: 10px 0; font-weight: 700; }
+        .fiat-val { color: var(--green); font-weight: 600; font-size: 18px; }
 
-        /* Стил за елементите в списък */
-        .item-card {
-            background: var(--card-color); padding: 20px; border-radius: 20px;
+        .list-item {
+            background: var(--card); padding: 20px; border-radius: 20px;
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 12px; border: 1px solid #1a1a1a;
         }
-        .item-card b { font-size: 18px; }
-        .item-card span { color: var(--text-dim); font-size: 14px; }
+        .list-item b { font-size: 18px; }
 
-        /* БУТОН ЗА КОПАЕНЕ (MINING) */
-        .mining-button {
-            width: 100%; height: 120px; background: #111; border: 2px solid #333;
-            border-radius: 20px; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; cursor: pointer;
-            transition: all 0.3s; margin-top: 20px;
+        /* MINING BUTTON */
+        .mining-rect {
+            width: 100%; height: 130px; background: #111; border: 2px solid #333;
+            border-radius: 25px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; cursor: pointer; transition: 0.4s;
         }
-        .mining-button.active { border-color: var(--accent-color); background: #1a1a00; }
-        .mining-button i { font-size: 35px; color: var(--accent-color); margin-bottom: 10px; }
-        .mining-button span { font-weight: 700; letter-spacing: 1px; }
+        .mining-rect.active { border-color: var(--accent); background: #1a1a00; }
+        .mining-rect i { font-size: 35px; color: var(--accent); margin-bottom: 10px; }
+        .mining-rect.active i { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* НАВИГАЦИЯ (FOOTER) */
-        .bottom-nav {
+        /* NAVIGATION */
+        .nav-bar {
             position: fixed; bottom: 0; width: 100%; height: 85px;
-            background: #000; border-top: 1px solid #222;
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+            background: rgba(0,0,0,0.9); border-top: 1px solid #222;
+            display: flex; backdrop-filter: blur(10px);
         }
-        .nav-link { 
-            color: #555; text-decoration: none; display: flex; 
-            flex-direction: column; align-items: center; cursor: pointer; 
-        }
-        .nav-link.active { color: var(--accent-color); }
-        .nav-link i { font-size: 22px; margin-bottom: 5px; }
-        .nav-link span { font-size: 10px; font-weight: 600; text-transform: uppercase; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; cursor: pointer; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; }
 
-        /* МОДАЛНИ ПРОЗОРЦИ */
-        #payment-modal {
+        .page { display: none; }
+        .page.active { display: block; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* MODAL */
+        #modal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
             z-index: 10001; align-items: center; justify-content: center; padding: 20px;
         }
-        .modal-box {
-            background: #151515; padding: 30px; border-radius: 25px;
-            width: 100%; max-width: 400px; text-align: center; border: 1px solid #333;
-        }
-        .wallet-box {
-            background: #000; padding: 15px; border-radius: 10px; border: 1px dashed var(--accent-color);
-            margin: 20px 0; font-family: monospace; font-size: 11px; word-break: break-all; color: var(--accent-color);
-        }
-
-        canvas { width: 100% !important; height: 200px !important; }
+        .modal-body { background: #111; padding: 30px; border-radius: 25px; text-align: center; max-width: 400px; border: 1px solid #333; }
+        .wallet-addr { background: #000; padding: 15px; border-radius: 12px; border: 1px dashed var(--accent); font-family: monospace; font-size: 11px; word-break: break-all; color: var(--accent); margin: 20px 0; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="blur-overlay"></div>
-        <div class="auth-container">
+    <section id="auth-screen">
+        <div class="auth-bg"></div>
+        <div class="auth-card">
             <h1>LGBTcoin</h1>
-            <div class="input-group">
-                <input type="text" id="reg-name" placeholder="Вашето Име">
-            </div>
-            <div class="input-group">
-                <input type="tel" id="reg-phone" placeholder="Телефонен номер">
-            </div>
-            <div class="input-group">
-                <input type="password" id="reg-pass" placeholder="Парола">
-            </div>
-            <button class="btn-action" onclick="processAuth()">ВЛЕЗ В СИСТЕМАТА</button>
+            <input type="text" id="reg-name" class="input-box" placeholder="Full Name">
+            <input type="tel" id="reg-phone" class="input-box" placeholder="Phone Number">
+            <input type="password" id="reg-pass" class="input-box" placeholder="Password">
+            <button class="btn-main" onclick="handleAuth()">ACCESS ACCOUNT</button>
         </div>
-    </div>
+    </section>
 
-    <div id="app-content">
-        <div class="main-view">
+    <main id="app-shell">
+        <div class="content">
             
-            <section id="sec-profile" class="page-section">
-                <h2>Моят Профил</h2>
-                <div class="balance-hero" style="margin-top:20px;">
-                    <p style="color:var(--text-dim); font-size:12px;">Линк за покана:</p>
-                    <div id="ui-ref-link" style="font-size:10px; margin:10px 0; background:#000; padding:10px; border-radius:8px; color:var(--accent-color);">---</div>
-                    <button class="btn-action" style="padding:10px; font-size:13px;" onclick="copyMyLink()">КОПИРАЙ ЛИНК</button>
+            <div id="view-profile" class="page">
+                <h2>Account Profile</h2>
+                <div class="balance-card" style="margin-top:20px;">
+                    <small>Your Referral Link</small>
+                    <p id="ui-link" style="font-size:10px; color:var(--accent); margin:15px 0; background:#000; padding:10px; border-radius:8px;">---</p>
+                    <button class="btn-main" style="padding:10px; font-size:14px;" onclick="copyRef()">COPY LINK</button>
                 </div>
-                <div class="item-card">
-                    <span>Поканени хора под мен:</span>
-                    <b id="ui-refs-count">0</b>
-                </div>
-                <div class="item-card">
-                    <span>Бонус скорост:</span>
-                    <b id="ui-bonus-speed">0 GH/s</b>
-                </div>
-                <p style="font-size:12px; color:var(--text-dim); text-align:center; padding:10px;">
-                    * Когато поканите 10 души, получавате бонус скорост 10 GH/s автоматично.
-                </p>
-            </section>
+                <div class="list-item"><span>Total Referrals</span><b id="ui-refs">0</b></div>
+                <div class="list-item"><span>Bonus Power</span><b id="ui-bonus">0 GH/s</b></div>
+                <p style="color:var(--dim); font-size:12px; text-align:center; padding:10px;">Invite 10 friends to automatically receive +10 GH/s boost!</p>
+            </div>
 
-            <section id="sec-shop" class="page-section">
-                <h2>Магазин за скорост</h2>
-                <p style="margin-bottom:20px; color:var(--text-dim);">Увеличете капацитета за копаене:</p>
-                
-                <div class="item-card">
-                    <div><b>10 GH/s</b><p>Скорост</p></div>
-                    <button class="btn-action" style="width:80px; padding:10px;" onclick="openPayment('1.99')">€1.99</button>
-                </div>
-                <div class="item-card">
-                    <div><b>50 GH/s</b><p>Скорост</p></div>
-                    <button class="btn-action" style="width:80px; padding:10px;" onclick="openPayment('3.99')">€3.99</button>
-                </div>
-                <div class="item-card">
-                    <div><b>100 GH/s</b><p>Скорост</p></div>
-                    <button class="btn-action" style="width:80px; padding:10px;" onclick="openPayment('5.99')">€5.99</button>
-                </div>
-                <div class="item-card">
-                    <div><b>300 GH/s</b><p>Скорост</p></div>
-                    <button class="btn-action" style="width:100px; padding:10px;" onclick="openPayment('10.99')">€10.99</button>
-                </div>
-            </section>
+            <div id="view-shop" class="page">
+                <h2>Cloud Shop</h2>
+                <p style="color:var(--dim); margin-bottom:20px;">Upgrade your mining hardware:</p>
+                <div class="list-item"><div><b>10 GH/s</b><p>Standard Boost</p></div><button class="btn-main" style="width:85px; padding:10px;" onclick="openBuy('1.99')">€1.99</button></div>
+                <div class="list-item"><div><b>50 GH/s</b><p>Pro Boost</p></div><button class="btn-main" style="width:85px; padding:10px;" onclick="openBuy('3.99')">€3.99</button></div>
+                <div class="list-item"><div><b>100 GH/s</b><p>Elite Power</p></div><button class="btn-main" style="width:85px; padding:10px;" onclick="openBuy('5.99')">€5.99</button></div>
+                <div class="list-item"><div><b>300 GH/s</b><p>Titan Power</p></div><button class="btn-main" style="width:85px; padding:10px;" onclick="openBuy('10.99')">€10.99</button></div>
+            </div>
 
-            <section id="sec-mining" class="page-section active">
-                <div class="balance-hero">
-                    <span>Наличен Баланс</span>
-                    <h2 id="ui-balance-total">0.0000</h2>
-                    <p>≈ €<span id="ui-fiat-val">0.00</span></p>
+            <div id="view-mining" class="page active">
+                <div class="balance-card">
+                    <small>LGBTcoin Balance</small>
+                    <h1 id="ui-bal">0.0000</h1>
+                    <div class="fiat-val">≈ €<span id="ui-money">0.00</span></div>
                 </div>
-                
-                <div class="item-card">
-                    <span>Текуща скорост:</span>
-                    <b id="ui-current-speed">3.0 GH/s</b>
-                </div>
-
-                <div class="mining-button" id="mining-trigger" onclick="handleMiningStart()">
+                <div class="list-item"><span>Active Speed</span><b id="ui-speed">3.0 GH/s</b></div>
+                <div class="mining-rect" id="mine-box" onclick="startMining()">
                     <i class="fas fa-hammer"></i>
-                    <span id="mining-status-text">START MINING</span>
+                    <b id="mine-text">START MINING</b>
                 </div>
-                <p id="mining-timer-display" style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-dim);"></p>
-            </section>
+                <p id="mine-timer" style="text-align:center; margin-top:15px; color:var(--dim); font-size:13px;"></p>
+            </div>
 
-            <section id="sec-market" class="page-section">
-                <h2>Пазарна Графика</h2>
-                <div class="balance-hero" style="margin-top:20px; padding:15px;">
-                    <canvas id="marketChartCanvas"></canvas>
+            <div id="view-market" class="page">
+                <h2>Market Stats</h2>
+                <div class="balance-card" style="margin-top:20px; padding:15px;">
+                    <canvas id="marketChart"></canvas>
                 </div>
-                <div class="item-card">
-                    <span>Цена на LGBTcoin:</span>
-                    <b style="color:var(--success)">€<span id="ui-market-price">0.20</span></b>
-                </div>
-            </section>
+                <div class="list-item"><span>Current Price (1 LGBT)</span><b style="color:var(--green)">€<span id="m-price">0.20</span></b></div>
+            </div>
 
-            <section id="sec-wallet" class="page-section">
-                <h2>Портфейл</h2>
-                <div class="balance-hero" style="text-align:left; padding:25px; margin-top:20px;">
-                    <h4 style="margin-bottom:15px;">Изпрати на приятел</h4>
-                    <input type="text" id="transfer-phone" class="btn-action" style="background:#000; color:#fff; text-align:left; margin-bottom:10px; border:1px solid #333;" placeholder="Телефон на получател">
-                    <input type="number" id="transfer-amount" class="btn-action" style="background:#000; color:#fff; text-align:left; margin-bottom:15px; border:1px solid #333;" placeholder="Сума (мин. 50)">
-                    <button class="btn-action" style="background:var(--accent-color);" onclick="executeTransfer()">ИЗПРАТИ МОНЕТИ</button>
+            <div id="view-wallet" class="page">
+                <h2>Wallet</h2>
+                <div class="balance-card" style="margin-top:20px; text-align:left; padding:25px;">
+                    <h4 style="margin-bottom:15px;">Transfer Funds</h4>
+                    <input type="text" id="tx-phone" class="input-box" placeholder="Recipient Phone">
+                    <input type="number" id="tx-amt" class="input-box" placeholder="Amount (Min 50)">
+                    <button class="btn-main" style="background:var(--accent);" onclick="transfer()">SEND NOW</button>
                 </div>
-                <div class="item-card">
-                    <span>Мин. за теглене:</span>
-                    <b>100 LGBTcoin</b>
-                </div>
-            </section>
+                <div class="list-item"><span>Min. Withdrawal</span><b>100 LGBT</b></div>
+            </div>
 
         </div>
 
-        <nav class="bottom-nav">
-            <div class="nav-link" onclick="switchTab('profile')"><i class="fas fa-user"></i><span>Профил</span></div>
-            <div class="nav-link" onclick="switchTab('shop')"><i class="fas fa-shopping-bag"></i><span>Магазин</span></div>
-            <div class="nav-link active" onclick="switchTab('mining')"><i class="fas fa-cube"></i><span>Mining</span></div>
-            <div class="nav-link" onclick="switchTab('market')"><i class="fas fa-chart-line"></i><span>Графика</span></div>
-            <div class="nav-link" onclick="switchTab('wallet')"><i class="fas fa-wallet"></i><span>Портфейл</span></div>
+        <nav class="nav-bar">
+            <div class="nav-item" onclick="tab('profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+            <div class="nav-item" onclick="tab('shop')"><i class="fas fa-shopping-cart"></i><span>Shop</span></div>
+            <div class="nav-item active" onclick="tab('mining')"><i class="fas fa-cube"></i><span>Mining</span></div>
+            <div class="nav-item" onclick="tab('market')"><i class="fas fa-chart-line"></i><span>Market</span></div>
+            <div class="nav-item" onclick="tab('wallet')"><i class="fas fa-wallet"></i><span>Wallet</span></div>
         </nav>
-    </div>
+    </main>
 
-    <div id="payment-modal">
-        <div class="modal-box">
-            <h3>Плащане с TON</h3>
-            <p style="margin:15px 0; font-size:14px; color:var(--text-dim);">Моля изпратете съответната сума в криптовалута <b>TON</b> на адрес:</p>
-            <div class="wallet-box">UQCuIUIrH59P3BhCYSXiQEp8abCk3Hx83M1JH95wrdhh-Z4C</div>
-            <p>Сума: <b id="modal-euro-val"></b> €</p>
-            <button class="btn-action" style="margin-top:20px;" onclick="closeModal()">ЗАТВОРИ</button>
+    <div id="modal">
+        <div class="modal-body">
+            <h3>TON Payment</h3>
+            <p style="margin:15px 0; font-size:14px; color:var(--dim);">To upgrade, please send the equivalent of <b id="pay-euro" style="color:#fff;"></b> EUR in <b>TON</b> to:</p>
+            <div class="wallet-addr">UQCuIUIrH59P3BhCYSXiQEp8abCk3Hx83M1JH95wrdhh-Z4C</div>
+            <p style="font-size:12px;">Speed will be added automatically after confirmation.</p>
+            <button class="btn-main" style="margin-top:20px;" onclick="document.getElementById('modal').style.display='none'">I HAVE PAID</button>
         </div>
     </div>
 
     <script type="module">
-        // Firebase Модули
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Твоята конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyD9_ZIz7D59Z-fooXVcUOffzEdWCQR3X2o",
             authDomain: "lgbtcoineu.firebaseapp.com",
@@ -264,189 +210,129 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const session = localStorage.getItem("lgbt_active_session");
 
-        let currentUser = localStorage.getItem("user_session");
         let coinPrice = 0.20;
-        let userBalance = 0;
+        let myBalance = 0;
 
-        // --- 1. АВТЕНТИКАЦИЯ ---
-        window.processAuth = async () => {
-            const name = document.getElementById('reg-name').value;
-            const phone = document.getElementById('reg-phone').value;
-            const pass = document.getElementById('reg-pass').value;
-            const urlParams = new URLSearchParams(window.location.search);
-            const referrer = urlParams.get('ref');
+        // --- AUTH LOGIC ---
+        window.handleAuth = async () => {
+            const n = document.getElementById('reg-name').value;
+            const p = document.getElementById('reg-phone').value;
+            const s = document.getElementById('reg-pass').value;
+            const refID = new URLSearchParams(window.location.search).get('ref');
 
-            if(!phone || !pass) return alert("Моля попълнете всички полета!");
+            if(!p || !s) return alert("Please fill all fields!");
 
-            const userRef = ref(db, 'users/' + phone);
-            const snapshot = await get(userRef);
+            const uRef = ref(db, 'users/' + p);
+            const snap = await get(uRef);
 
-            if(!snapshot.exists()) {
-                // Нова регистрация
-                await set(userRef, {
-                    name: name,
-                    phone: phone,
-                    pass: pass,
-                    balance: 0,
-                    speed: 3.0,
-                    refs: 0,
-                    lastMining: 0
-                });
-
-                // Логика за реферал
-                if(referrer && referrer !== phone) {
-                    const refUserRef = ref(db, 'users/' + referrer);
-                    const refSnap = await get(refUserRef);
-                    if(refSnap.exists()) {
-                        let newRefCount = (refSnap.val().refs || 0) + 1;
-                        let newSpeed = refSnap.val().speed || 3.0;
-                        if(newRefCount % 10 === 0) newSpeed += 10;
-                        await update(refUserRef, { refs: newRefCount, speed: newSpeed });
+            if(!snap.exists()) {
+                await set(uRef, { name: n, phone: p, pass: s, balance: 0, speed: 3.0, refs: 0, last: 0 });
+                if(refID && refID !== p) {
+                    const rRef = ref(db, 'users/' + refID);
+                    const rSnap = await get(rRef);
+                    if(rSnap.exists()) {
+                        let c = (rSnap.val().refs || 0) + 1;
+                        let sp = rSnap.val().speed || 3.0;
+                        if(c % 10 === 0) sp += 10;
+                        update(rRef, { refs: c, speed: sp });
                     }
                 }
-            } else {
-                if(snapshot.val().pass !== pass) return alert("Грешна парола!");
-            }
+            } else if(snap.val().pass !== s) return alert("Wrong password!");
 
-            localStorage.setItem("user_session", phone);
+            localStorage.setItem("lgbt_active_session", p);
             location.reload();
         };
 
-        // --- 2. СИНХРОНИЗАЦИЯ НА ДАННИТЕ ---
-        if(currentUser) {
+        // --- APP INITIALIZATION ---
+        if(session) {
             document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('app-content').style.display = 'flex';
-            document.getElementById('ui-ref-link').innerText = window.location.origin + window.location.pathname + "?ref=" + currentUser;
+            document.getElementById('app-shell').style.display = 'flex';
+            document.getElementById('ui-link').innerText = window.location.origin + window.location.pathname + "?ref=" + session;
 
-            const myRef = ref(db, 'users/' + currentUser);
-            onValue(myRef, (snap) => {
-                const data = snap.val();
-                if(!data) return;
-
-                userBalance = data.balance || 0;
-                document.getElementById('ui-balance-total').innerText = userBalance.toFixed(4);
-                document.getElementById('ui-current-speed').innerText = data.speed.toFixed(1) + " GH/s";
-                document.getElementById('ui-refs-count').innerText = data.refs || 0;
-                document.getElementById('ui-fiat-val').innerText = (userBalance * coinPrice).toFixed(2);
-                
-                let bonus = data.speed - 3.0;
-                document.getElementById('ui-bonus-speed').innerText = bonus > 0 ? bonus.toFixed(1) + " GH/s" : "0 GH/s";
-
-                updateMiningUI(data.lastMining);
+            onValue(ref(db, 'users/' + session), (s) => {
+                const d = s.val();
+                if(!d) return;
+                myBalance = d.balance || 0;
+                document.getElementById('ui-bal').innerText = myBalance.toFixed(4);
+                document.getElementById('ui-speed').innerText = d.speed.toFixed(1) + " GH/s";
+                document.getElementById('ui-refs').innerText = d.refs || 0;
+                document.getElementById('ui-bonus').innerText = (d.speed - 3.0).toFixed(1) + " GH/s";
+                document.getElementById('ui-money').innerText = (myBalance * coinPrice).toFixed(2);
+                syncMiningUI(d.last);
             });
 
-            // Данни от пазара
             onValue(ref(db, 'market'), (snap) => {
-                const mData = snap.val();
-                if(mData) {
-                    coinPrice = mData.price || 0.20;
-                    document.getElementById('ui-market-price').innerText = coinPrice.toFixed(2);
-                    if(mData.history) renderChart(mData.history);
+                const data = snap.val();
+                if(data) {
+                    coinPrice = data.price || 0.20;
+                    document.getElementById('m-price').innerText = coinPrice.toFixed(2);
+                    if(data.history) drawChart(data.history);
                 }
             });
         }
 
-        // --- 3. MINING ЛОГИКА ---
-        window.handleMiningStart = async () => {
-            const userRef = ref(db, 'users/' + currentUser);
-            const snap = await get(userRef);
-            const now = Date.now();
+        window.startMining = async () => {
+            const r = ref(db, 'users/' + session);
+            const s = await get(r);
+            if(Date.now() - s.val().last < 86400000) return alert("Mining already in progress!");
 
-            if(snap.val().lastMining && (now - snap.val().lastMining < 86400000)) {
-                return alert("Вече копаете! Изчакайте края на 24-часовия цикъл.");
-            }
-
-            await update(userRef, { lastMining: now });
+            await update(r, { last: Date.now() });
             
-            // Симулация на копаене (на всеки 10 секунди обновяваме базата)
-            const interval = setInterval(async () => {
-                const liveSnap = await get(userRef);
+            const mineInterval = setInterval(async () => {
+                const liveSnap = await get(r);
                 const ld = liveSnap.val();
-                if(Date.now() - ld.lastMining < 86400000) {
-                    let increment = ld.speed / 14400; // Разпределяме GH/s за 24 часа
-                    await update(userRef, { balance: ld.balance + increment });
+                if(Date.now() - ld.last < 86400000) {
+                    update(r, { balance: ld.balance + (ld.speed / 14400) });
                 } else {
-                    clearInterval(interval);
+                    clearInterval(mineInterval);
                 }
             }, 10000);
         };
 
-        function updateMiningUI(lastTime) {
-            const btn = document.getElementById('mining-trigger');
-            const statusTxt = document.getElementById('mining-status-text');
-            const timerTxt = document.getElementById('mining-timer-display');
+        function syncMiningUI(last) {
+            const box = document.getElementById('mine-box');
+            const txt = document.getElementById('mine-text');
+            const timer = document.getElementById('mine-timer');
             const now = Date.now();
-
-            if(lastTime && (now - lastTime < 86400000)) {
-                btn.classList.add('active');
-                statusTxt.innerText = "MINING ACTIVE...";
-                let remaining = 86400000 - (now - lastTime);
-                let hours = Math.floor(remaining / 3600000);
-                timerTxt.innerText = "Следваща сесия след: " + hours + "ч.";
+            if(last && (now - last < 86400000)) {
+                box.classList.add('active'); txt.innerText = "MINING ACTIVE";
+                let remaining = 86400000 - (now - last);
+                timer.innerText = "Ends in: " + Math.floor(remaining / 3600000) + " hours";
             } else {
-                btn.classList.remove('active');
-                statusTxt.innerText = "START MINING";
-                timerTxt.innerText = "Статус: Готовност";
+                box.classList.remove('active'); txt.innerText = "START MINING";
+                timer.innerText = "Status: Ready";
             }
         }
 
-        // --- 4. ПАЗАРНА ГРАФИКА ---
-        let marketChart;
-        function renderChart(historyStr) {
-            const ctx = document.getElementById('marketChartCanvas').getContext('2d');
-            const dataArr = historyStr.split(',').map(Number);
-            
-            if(marketChart) marketChart.destroy();
-            marketChart = new Chart(ctx, {
+        let ch;
+        function drawChart(str) {
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            const arr = str.split(',').map(Number);
+            if(ch) ch.destroy();
+            ch = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: dataArr.map(() => ''),
-                    datasets: [{
-                        data: dataArr,
-                        borderColor: '#FFD700',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        fill: true,
-                        backgroundColor: 'rgba(255, 215, 0, 0.05)'
-                    }]
+                    labels: arr.map(() => ''),
+                    datasets: [{ data: arr, borderColor: '#FFD700', borderWidth: 3, tension: 0.4, pointRadius: 0, fill: true, backgroundColor: 'rgba(255,215,0,0.05)' }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false }, y: { display: false } }
-                }
+                options: { plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
             });
         }
 
-        // --- 5. ФУНКЦИИ ЗА НАВИГАЦИЯ И УТИЛИТИ ---
-        window.switchTab = (tab) => {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('sec-' + tab).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        window.tab = (t) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('view-' + t).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             event.currentTarget.classList.add('active');
         };
-
-        window.openPayment = (val) => {
-            document.getElementById('modal-euro-val').innerText = val;
-            document.getElementById('payment-modal').style.display = 'flex';
+        window.openBuy = (val) => {
+            document.getElementById('pay-euro').innerText = val;
+            document.getElementById('modal').style.display = 'flex';
         };
-
-        window.closeModal = () => document.getElementById('payment-modal').style.display = 'none';
-
-        window.copyMyLink = () => {
-            const link = document.getElementById('ui-ref-link').innerText;
-            navigator.clipboard.writeText(link);
-            alert("Линкът е копиран!");
-        };
-
-        window.executeTransfer = () => {
-            const amt = document.getElementById('transfer-amount').value;
-            if(amt < 50) return alert("Минималната сума за трансфер е 50 монети.");
-            alert("Заявката е изпратена за ръчно потвърждение.");
-        };
+        window.transfer = () => alert("Transfer request sent for manual approval.");
+        window.copyRef = () => { navigator.clipboard.writeText(document.getElementById('ui-link').innerText); alert("Link Copied!"); };
     </script>
 </body>
 </html>

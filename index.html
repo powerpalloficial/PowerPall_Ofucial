@@ -3,187 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LGBTcoin Pro | Dark Exchange</title>
+    <title>LGBTcoin | Premium Black Exchange</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg: #000000;
-            --card: #121212;
-            --primary: #FFFFFF;
+            --bg: #050505;
+            --card: #111111;
             --accent: #FFD700;
-            --text-dim: #888888;
-            --safe: #00ff88;
-            --danger: #ff3333;
-            --rainbow: linear-gradient(90deg, #ff0000, #ff8d00, #ffee00, #008121, #004cff, #760089);
+            --text: #ffffff;
+            --dim: #666666;
+            --green: #00ff88;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--primary); overflow: hidden; height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* --- AUTH SCREEN --- */
-        #page-auth { 
-            height: 100vh; position: fixed; width: 100%; z-index: 9999;
-            display: flex; align-items: center; justify-content: center; padding: 25px;
-            background: #000;
+        /* AUTH LAYER */
+        #auth-screen {
+            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px;
         }
-        .auth-card { 
-            background: var(--card); padding: 40px 30px; border-radius: 30px; 
-            width: 100%; max-width: 400px; text-align: center; border: 1px solid #333;
-        }
-        .auth-card h1 { font-weight: 800; font-size: 32px; letter-spacing: -1px; background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .input-box { 
-            width: 100%; padding: 18px; margin-bottom: 12px; border-radius: 12px; 
-            border: 1px solid #333; outline: none; font-size: 16px; background: #1a1a1a; color: #fff;
-        }
-        .btn-gold { 
-            width: 100%; padding: 18px; background: var(--accent); color: #000; 
-            border: none; border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
+        .logo-glow {
+            font-size: 40px; font-weight: 700; margin-bottom: 40px;
+            background: linear-gradient(to right, #ff0000, #ffee00, #004cff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
         }
 
-        /* --- MAIN APP --- */
-        #app-shell { display: none; height: 100vh; flex-direction: column; }
-        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; }
+        .auth-input {
+            width: 100%; max-width: 350px; background: #151515; border: 1px solid #222;
+            padding: 20px; border-radius: 15px; color: #fff; margin-bottom: 15px; outline: none;
+        }
+        .auth-btn {
+            width: 100%; max-width: 350px; background: #fff; color: #000;
+            padding: 20px; border-radius: 15px; font-weight: 700; border: none; cursor: pointer;
+        }
+
+        /* MAIN UI */
+        #main-app { display: none; height: 100vh; flex-direction: column; }
+        .scroll-view { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .user-pill { background: #111; padding: 8px 15px; border-radius: 50px; border: 1px solid #222; font-size: 14px; }
+
+        /* CRYPTO CARD */
+        .crypto-card {
+            background: linear-gradient(145deg, #111, #000); padding: 35px 25px;
+            border-radius: 30px; border: 1px solid #222; margin-bottom: 25px;
+            position: relative; overflow: hidden;
+        }
+        .crypto-card::after {
+            content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+        }
+        .crypto-card small { color: var(--dim); text-transform: uppercase; letter-spacing: 2px; font-size: 11px; }
+        .crypto-card h1 { font-size: 48px; margin: 10px 0; font-weight: 700; }
+        .crypto-card .fiat-val { color: var(--green); font-size: 18px; font-weight: 500; }
+
+        /* MARKET STATS */
+        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .m-item { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid #1a1a1a; }
+        .m-item label { display: block; color: var(--dim); font-size: 11px; margin-bottom: 5px; }
+        .m-item b { font-size: 18px; }
+
+        /* MINING BOX */
+        .miner-box {
+            background: #000; border: 2px solid #222; padding: 30px; border-radius: 25px;
+            text-align: center; transition: 0.3s;
+        }
+        .miner-box.active { border-color: var(--accent); box-shadow: 0 0 20px rgba(255,215,0,0.1); }
+        .btn-action {
+            width: 100%; padding: 22px; border-radius: 18px; border: none;
+            background: var(--accent); color: #000; font-weight: 700; font-size: 16px; cursor: pointer;
+        }
+        .btn-action:disabled { background: #222; color: #555; }
+
+        /* NAV BAR */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; height: 85px;
+            background: rgba(5,5,5,0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; align-items: center;
+        }
+        .nav-link { color: #444; display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; cursor: pointer; }
+        .nav-link.active { color: #fff; }
+        .nav-link i { font-size: 22px; margin-bottom: 5px; }
+
         .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page.active { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* DASHBOARD ELEMENTS */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .balance-card { 
-            background: var(--card); padding: 35px 20px; border-radius: 25px; 
-            text-align: center; border: 1px solid #222; margin-bottom: 20px;
-        }
-        .balance-card small { color: var(--text-dim); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
-        .balance-card h1 { font-size: 45px; font-weight: 800; margin: 5px 0; }
-        .balance-card .money-val { color: var(--safe); font-weight: 600; font-size: 18px; }
-
-        .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-item { background: var(--card); padding: 15px; border-radius: 20px; border: 1px solid #222; text-align: center; }
-        .stat-item span { display: block; font-size: 10px; color: var(--text-dim); margin-bottom: 5px; }
-
-        .mining-zone {
-            background: #111; padding: 30px; border-radius: 25px; text-align: center; border: 1px dashed #444;
-        }
-        .btn-mine { 
-            background: var(--primary); color: #000; width: 100%; padding: 20px; 
-            border-radius: 15px; font-weight: 900; border: none; cursor: pointer;
-        }
-        .btn-mine.active { background: #333; color: #777; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        /* NAVIGATION */
-        .nav-bar { 
-            position: fixed; bottom: 0; width: 100%; height: 85px; 
-            background: #000; border-top: 1px solid #222; display: flex; 
-        }
-        .nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; cursor: pointer; }
-        .nav-tab.active { color: var(--accent); }
-        .nav-tab i { font-size: 20px; margin-bottom: 5px; }
-        .nav-tab span { font-size: 10px; font-weight: 600; }
-
-        /* SHOP & LISTS */
-        .list-item { 
-            background: var(--card); padding: 20px; border-radius: 20px; 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-        }
-
-        /* CHART BOX */
-        .chart-box { background: var(--card); padding: 15px; border-radius: 25px; border: 1px solid #222; margin-top: 15px; }
-
-        /* TOAST */
-        #toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--accent); color: #000; padding: 12px 25px; border-radius: 50px;
-            font-weight: 700; z-index: 10000; transition: 0.4s;
-        }
-        #toast.show { top: 20px; }
+        /* CHART CUSTOM */
+        .chart-container { background: #0a0a0a; padding: 15px; border-radius: 25px; border: 1px solid #111; }
     </style>
 </head>
 <body>
 
-    <div id="toast">Notification</div>
-
-    <section id="page-auth">
-        <div class="auth-card">
-            <h1>LGBTcoin PRO</h1>
-            <p style="color:#555; margin-bottom:30px; font-size:14px;">Institutional Grade Mining</p>
-            <input type="text" id="reg-name" class="input-box" placeholder="Your Name">
-            <input type="tel" id="reg-phone" class="input-box" placeholder="Phone Number">
-            <input type="password" id="reg-pass" class="input-box" placeholder="Password">
-            <button class="btn-gold" onclick="auth()">Sign In / Up</button>
-        </div>
+    <section id="auth-screen">
+        <div class="logo-glow">LGBTcoin</div>
+        <input type="text" id="a-name" class="auth-input" placeholder="Display Name">
+        <input type="tel" id="a-phone" class="auth-input" placeholder="Phone Number">
+        <input type="password" id="a-pass" class="auth-input" placeholder="Password">
+        <button class="auth-btn" onclick="handleAuth()">Enter Terminal</button>
     </section>
 
-    <main id="app-shell">
-        <div class="content">
+    <main id="main-app">
+        <div class="scroll-view">
             
-            <div id="view-mining" class="page active">
-                <div class="header">
-                    <span style="font-weight:600;">Account: <b id="ui-name" style="color:var(--accent);">---</b></span>
-                    <i class="fas fa-bell"></i>
-                </div>
-                
-                <div class="balance-card">
-                    <small>Total Balance</small>
-                    <h1 id="ui-bal">0.0000</h1>
-                    <div class="money-val">≈ €<span id="ui-money">0.00</span></div>
+            <div id="p-home" class="page active">
+                <div class="top-bar">
+                    <div class="user-pill"><i class="fas fa-user-circle"></i> <span id="u-name">Miner</span></div>
+                    <div style="color: var(--green); font-size: 12px;"><i class="fas fa-circle"></i> LIVE</div>
                 </div>
 
-                <div class="stat-row">
-                    <div class="stat-item"><span>Hashrate</span><b id="ui-speed">3.0 GH/s</b></div>
-                    <div class="stat-item"><span>Price</span><b style="color:var(--safe);">€<span id="ui-cur-price">0.00</span></b></div>
+                <div class="crypto-card">
+                    <small>Vault Balance</small>
+                    <h1 id="u-bal">0.0000</h1>
+                    <div class="fiat-val">≈ <span id="u-euro">0.00</span> EUR</div>
                 </div>
 
-                <div class="mining-zone">
-                    <button id="mine-btn" class="btn-mine" onclick="startMining()">ACTIVATE MINER</button>
-                    <p id="mine-timer" style="margin-top:15px; font-size:12px; color:var(--text-dim);"></p>
+                <div class="market-grid">
+                    <div class="m-item"><label>Current Price</label><b id="m-price">€0.00</b></div>
+                    <div class="m-item"><label>Mining Speed</label><b id="u-speed">3.0 GH/s</b></div>
+                </div>
+
+                <div class="miner-box" id="m-box">
+                    <button class="btn-action" id="m-btn" onclick="startCycle()">START CLOUD MINING</button>
+                    <p id="m-timer" style="margin-top:15px; color:var(--dim); font-size:12px;"></p>
                 </div>
             </div>
 
-            <div id="view-market" class="page">
-                <h2 style="margin-bottom:20px;">Market Trend</h2>
-                <div class="chart-box">
-                    <canvas id="liveChart"></canvas>
+            <div id="p-market" class="page">
+                <h2 style="margin-bottom:20px;">Exchange Data</h2>
+                <div class="chart-container">
+                    <canvas id="mainChart"></canvas>
                 </div>
-                <div class="list-item" style="margin-top:20px;">
-                    <span>Market Status</span>
-                    <b style="color:var(--safe);">BULLISH</b>
-                </div>
-            </div>
-
-            <div id="view-shop" class="page">
-                <h2 style="margin-bottom:20px;">Cloud Power</h2>
-                <div class="list-item">
-                    <div><b>V1. Basic Node</b><p style="font-size:11px; color:#555;">+20 GH/s Power</p></div>
-                    <button class="btn-gold" style="width:80px; padding:10px; font-size:12px;" onclick="pay('€1.99')">€1.99</button>
-                </div>
-                <div class="list-item">
-                    <div><b>V2. GPU Rig</b><p style="font-size:11px; color:#555;">+100 GH/s Power</p></div>
-                    <button class="btn-gold" style="width:80px; padding:10px; font-size:12px;" onclick="pay('€6.99')">€6.99</button>
+                <div class="m-item" style="margin-top:20px; display:flex; justify-content:space-between;">
+                    <span>Market Trend</span>
+                    <span id="m-status" style="color:var(--green)">WAITING DATA...</span>
                 </div>
             </div>
 
-            <div id="view-wallet" class="page">
-                <h2 style="margin-bottom:20px;">Safe Send</h2>
-                <div class="auth-card" style="width:100%; border:none; padding:20px;">
-                    <input type="text" id="tx-phone" class="input-box" placeholder="Receiver Phone">
-                    <input type="number" id="tx-amt" class="input-box" placeholder="Amount LGBT">
-                    <button class="btn-gold" onclick="send()">Transfer Now</button>
+            <div id="p-wallet" class="page">
+                <h2 style="margin-bottom:20px;">Asset Transfer</h2>
+                <div class="m-item" style="margin-bottom:15px;">
+                    <input type="text" id="t-phone" class="auth-input" placeholder="Receiver Phone" style="margin-bottom:10px; background:#000;">
+                    <input type="number" id="t-amt" class="auth-input" placeholder="Amount (LGBT)" style="background:#000;">
+                    <button class="btn-action" style="margin-top:10px;" onclick="transfer()">SEND ASSETS</button>
                 </div>
             </div>
 
         </div>
 
-        <nav class="nav-bar">
-            <div class="nav-tab active" onclick="tab('mining')"><i class="fas fa-layer-group"></i><span>Home</span></div>
-            <div class="nav-tab" onclick="tab('market')"><i class="fas fa-chart-line"></i><span>Market</span></div>
-            <div class="nav-tab" onclick="tab('shop')"><i class="fas fa-bolt"></i><span>Buy</span></div>
-            <div class="nav-tab" onclick="tab('wallet')"><i class="fas fa-wallet"></i><span>Wallet</span></div>
+        <nav class="bottom-nav">
+            <div class="nav-link active" onclick="nav('home')"><i class="fas fa-th-large"></i><span>HOME</span></div>
+            <div class="nav-link" onclick="nav('market')"><i class="fas fa-chart-line"></i><span>MARKET</span></div>
+            <div class="nav-link" onclick="nav('wallet')"><i class="fas fa-wallet"></i><span>WALLET</span></div>
         </nav>
     </main>
 
@@ -191,7 +169,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIG (Your actual config)
         const firebaseConfig = {
             apiKey: "AIzaSyD9_ZIz7D59Z-fooXVcUOffzEdWCQR3X2o",
             authDomain: "lgbtcoineu.firebaseapp.com",
@@ -204,123 +181,124 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let currentPrice = 0.22; // Default
-        let myBalance = 0;
-        const user = localStorage.getItem("user_pro");
+        const session = localStorage.getItem("lgbt_master_key");
 
-        // --- GLOBAL SETTINGS (PRICE & CHART) ---
-        onValue(ref(db, 'settings'), (snap) => {
-            const s = snap.val();
-            if(s) {
-                currentPrice = s.price || 0.22;
-                document.getElementById('ui-cur-price').innerText = currentPrice.toFixed(4);
-                updateValueUI();
-                if(s.chart) updateChart(s.chart);
+        let marketPrice = 0.22;
+        let userBalance = 0;
+
+        // --- REALTIME PRICE & CHART CONTROLLER ---
+        // В Firebase създайте: market/current и market/history
+        onValue(ref(db, 'market'), (snap) => {
+            const data = snap.val();
+            if(data) {
+                marketPrice = data.current || 0.22;
+                document.getElementById('m-price').innerText = "€" + marketPrice.toFixed(4);
+                updateFiatUI();
+                if(data.history) drawChart(data.history);
+                document.getElementById('m-status').innerText = data.trend || "STABLE";
             }
         });
 
-        function updateValueUI() {
-            document.getElementById('ui-money').innerText = (myBalance * currentPrice).toFixed(2);
+        function updateFiatUI() {
+            document.getElementById('u-euro').innerText = (userBalance * marketPrice).toFixed(2);
         }
 
         // --- AUTH ---
-        window.auth = async () => {
-            const name = document.getElementById('reg-name').value;
-            const phone = document.getElementById('reg-phone').value;
-            const pass = document.getElementById('reg-pass').value;
-            if(!phone || !pass) return alert("Fields empty!");
+        window.handleAuth = async () => {
+            const n = document.getElementById('a-name').value;
+            const p = document.getElementById('a-phone').value;
+            const s = document.getElementById('a-pass').value;
+            if(!p || !s) return alert("Missing info");
 
-            const uRef = ref(db, 'users/' + phone);
+            const uRef = ref(db, 'users/' + p);
             const snap = await get(uRef);
 
             if(!snap.exists()) {
-                await set(uRef, { name, phone, pass, balance: 0, speed: 3.0, lastMine: 0 });
-            } else if(snap.val().pass !== pass) return alert("Wrong pass!");
+                await set(uRef, { name: n, phone: p, pass: s, balance: 0, speed: 3.0, last: 0 });
+            } else if(snap.val().pass !== s) return alert("Wrong password");
 
-            localStorage.setItem("user_pro", phone);
+            localStorage.setItem("lgbt_master_key", p);
             location.reload();
         };
 
         // --- APP LOGIC ---
-        if(user) {
-            document.getElementById('page-auth').style.display = 'none';
-            document.getElementById('app-shell').style.display = 'flex';
+        if(session) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
 
-            onValue(ref(db, 'users/' + user), (s) => {
-                const d = s.val();
-                myBalance = d.balance || 0;
-                document.getElementById('ui-name').innerText = d.name;
-                document.getElementById('ui-bal').innerText = myBalance.toFixed(4);
-                document.getElementById('ui-speed').innerText = (d.speed || 3.0).toFixed(1) + " GH/s";
-                updateValueUI();
-                checkMining(d.lastMine);
+            onValue(ref(db, 'users/' + session), (snap) => {
+                const d = snap.val();
+                if(d) {
+                    userBalance = d.balance || 0;
+                    document.getElementById('u-name').innerText = d.name;
+                    document.getElementById('u-bal').innerText = userBalance.toFixed(4);
+                    document.getElementById('u-speed').innerText = d.speed.toFixed(1) + " GH/s";
+                    updateFiatUI();
+                    syncMiner(d.last);
+                }
             });
         }
 
-        window.startMining = async () => {
-            const uRef = ref(db, 'users/' + user);
-            const snap = await get(uRef);
-            const d = snap.val();
-            await update(uRef, { lastMine: Date.now() });
+        window.startCycle = async () => {
+            const r = ref(db, 'users/' + session);
+            await update(r, { last: Date.now() });
             
-            // Realtime update while active
+            // Автоматично добавяне (симулация докато си в сайта)
             setInterval(async () => {
-                const live = await get(uRef);
-                const ld = live.val();
-                if(Date.now() - ld.lastMine < 86400000) {
-                    update(uRef, { balance: ld.balance + (ld.speed / 15000) });
+                const s = await get(r);
+                const d = s.val();
+                if(Date.now() - d.last < 86400000) {
+                    update(r, { balance: d.balance + (d.speed / 14400) });
                 }
             }, 5000);
         };
 
-        function checkMining(last) {
-            const btn = document.getElementById('mine-btn');
-            const timer = document.getElementById('mine-timer');
+        function syncMiner(last) {
+            const btn = document.getElementById('m-btn');
+            const box = document.getElementById('m-box');
             const now = Date.now();
             if(last && (now - last < 86400000)) {
-                btn.disabled = true; btn.classList.add('active'); btn.innerText = "MINING ENGINE ON";
-                timer.innerText = "System will reset in 24h";
+                btn.disabled = true; btn.innerText = "MINING IN PROGRESS...";
+                box.classList.add('active');
             } else {
-                btn.disabled = false; btn.classList.remove('active'); btn.innerText = "ACTIVATE MINER";
-                timer.innerText = "Miner Offline";
+                btn.disabled = false; btn.innerText = "START CLOUD MINING";
+                box.classList.remove('active');
             }
         }
 
         // --- CHART ENGINE ---
-        let myChart;
-        function updateChart(dataStr) {
-            const dataArray = dataStr.split(',').map(Number);
-            const ctx = document.getElementById('liveChart').getContext('2d');
-            
-            if(myChart) myChart.destroy();
-            
-            myChart = new Chart(ctx, {
+        let chartObj;
+        function drawChart(points) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            const arr = points.split(',').map(Number);
+            if(chartObj) chartObj.destroy();
+            chartObj = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: dataArray.map((_, i) => i),
+                    labels: arr.map(() => ''),
                     datasets: [{
-                        data: dataArray,
+                        data: arr,
                         borderColor: '#FFD700',
-                        borderWidth: 3,
+                        borderWidth: 4,
                         tension: 0.4,
                         fill: true,
-                        backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                        backgroundColor: 'rgba(255,215,0,0.03)',
                         pointRadius: 0
                     }]
                 },
-                options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { display: false } } }
+                options: { plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
             });
         }
 
-        // --- HELPERS ---
-        window.tab = (t) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('view-' + t).classList.add('active');
-            document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
+        // --- NAV ---
+        window.nav = (p) => {
+            document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+            document.getElementById('p-' + p).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             event.currentTarget.classList.add('active');
         };
-        window.pay = (p) => alert("Send TON to UQCuI... \nAmount: " + p);
-        window.send = () => alert("Processing secure transfer...");
+
+        window.transfer = () => alert("Initiating Blockchain Transfer...");
     </script>
 </body>
 </html>
